@@ -1,5 +1,5 @@
 {
-  "name": "@jarred/react-native-photo-manipulator",
+  "name": "react-native-photo-manipulator",
   "version": "1.0.2",
   "private": false,
   "description": "Image processing library to edit photo programmatically in React Native",
