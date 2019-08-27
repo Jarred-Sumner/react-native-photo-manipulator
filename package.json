@@ -1,6 +1,7 @@
 {
-  "name": "react-native-photo-manipulator",
+  "name": "@jarred/react-native-photo-manipulator",
   "version": "1.0.2",
+  "private": false,
   "description": "Image processing library to edit photo programmatically in React Native",
   "main": "index.js",
   "typings": "index.d.ts",
@@ -51,10 +52,7 @@
     "type": "git",
     "url": "git+https://github.com/guhungry/react-native-photo-manipulator.git"
   },
-  "keywords": [
-    "react-native",
-    "image-processing"
-  ],
+  "keywords": ["react-native", "image-processing"],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/guhungry/react-native-photo-manipulator/issues"
