@@ -26,7 +26,8 @@ export interface Color {
 
 export enum MimeType {
   jpg = "image/jpeg",
-  png = "image/png"
+  png = "image/png",
+  webp = "image/webp"
 }
 
 export type ImageSource = string | number;
@@ -55,6 +56,24 @@ export interface PhotoManipulatorStatic {
    */
   batch: (
     image: ImageSource,
+    operations: PhotoBatchOperations[],
+    cropRegion: Rect,
+    targetSize?: Size,
+    quality?: number,
+    mimeType?: MimeType
+  ) => Promise<string>;
+
+  /**
+   * Crop, resize and do operations (overlay and printText) on image
+   *
+   * @param image (required) Uri of image can be http://, https://, file:// and require()
+   * @param operations (required) List of image processing operations
+   * @param cropRegion (required) Region in { x, y, width, height }
+   * @param targetSize (optional) Size in { width, height }
+   * @param quality (optional) Quality of result image in `0 - 100`
+   */
+  batchWithTransparentImage: (
+    imageSize: Size,
     operations: PhotoBatchOperations[],
     cropRegion: Rect,
     targetSize?: Size,

@@ -31,6 +31,23 @@ const PhotoManipulator: PhotoManipulatorStatic = {
       mimeType
     );
   },
+  batchWithTransparentImage: (
+    imageSize: Size,
+    operations: PhotoBatchOperations[],
+    cropRegion: Rect,
+    targetSize?: Size,
+    quality: number = 100,
+    mimeType: MimeType = MimeType.jpg
+  ) => {
+    return RNPhotoManipulator.imageWithSize(
+      imageSize,
+      operations.map(ParamUtils.toBatchNative),
+      cropRegion,
+      targetSize,
+      quality,
+      mimeType
+    );
+  },
   crop: (
     image: ImageSource,
     cropRegion: Rect,

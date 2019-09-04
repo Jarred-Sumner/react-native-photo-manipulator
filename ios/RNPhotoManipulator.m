@@ -49,7 +49,7 @@ RCT_EXPORT_METHOD(imageWithSize:(NSDictionary *)imageSize
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
 {
-    UIImage *image = [self imageWithColor:UIColor.clearColor andSize:CGSizeMake(imageSize[@"width"], imageSie[@"height"])];
+    UIImage *image = [self imageWithColor:UIColor.clearColor andSize:CGSizeMake([imageSize[@"width"] doubleValue], [imageSize[@"height"] doubleValue])];
     [self image:image operations:operations cropRegion:cropRegion targetSize:targetSize quality:quality mimeType:mimeType resolve:resolve reject:reject];
 }
 
@@ -75,7 +75,7 @@ RCT_EXPORT_METHOD(imageWithSize:(NSDictionary *)imageSize
     quality:(NSInteger)quality
     mimeType:(NSString *)mimeType
     resolve:(RCTPromiseResolveBlock)resolve
-    reject:(RCTPromiseRejectBlock)reject)
+    reject:(RCTPromiseRejectBlock)reject
 {
 
     UIImage *result = [image crop:[RCTConvert CGRect:cropRegion]];
