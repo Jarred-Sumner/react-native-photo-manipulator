@@ -52,12 +52,14 @@ const PhotoManipulator: PhotoManipulatorStatic = {
     image: ImageSource,
     cropRegion: Rect,
     targetSize?: Size,
+    quality: number = 100,
     mimeType: MimeType = MimeType.jpg
   ) =>
     RNPhotoManipulator.crop(
       ParamUtils.toImageNative(image),
       cropRegion,
       targetSize,
+      quality,
       mimeType
     ),
   overlayImage: (

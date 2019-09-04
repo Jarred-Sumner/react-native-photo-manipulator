@@ -65,7 +65,7 @@ export interface PhotoManipulatorStatic {
      * @param cropRegion (required) Region in { x, y, width, height }
      * @param targetSize (optional) Size in { width, height }
      */
-    crop: (image: ImageSource, cropRegion: Rect, targetSize?: Size, mimeType?: MimeType) => Promise<string>;
+    crop: (image: ImageSource, cropRegion: Rect, targetSize?: Size, quality?: number, mimeType?: MimeType) => Promise<string>;
     /**
      * Overlay image on top of background image
      *

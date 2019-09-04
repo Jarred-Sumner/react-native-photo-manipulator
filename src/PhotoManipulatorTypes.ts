@@ -92,6 +92,7 @@ export interface PhotoManipulatorStatic {
     image: ImageSource,
     cropRegion: Rect,
     targetSize?: Size,
+    quality?: number,
     mimeType?: MimeType
   ) => Promise<string>;
 
