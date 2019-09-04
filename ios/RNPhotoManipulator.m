@@ -36,18 +36,59 @@ RCT_EXPORT_METHOD(batch:(NSURLRequest *)uri
             return;
         }
 
-        UIImage *result = [image crop:[RCTConvert CGRect:cropRegion]];
-        if (targetSize != nil) {
-            result = [result resize:[RCTConvert CGSize:targetSize] scale:result.scale];
-        }
-
-        for (NSDictionary *operation in operations) {
-            result = [self processBatchOperation:result operation:operation];
-        }
-
-        NSString *uri = [ImageUtils saveTempFile:result mimeType:mimeType quality:quality];
-        resolve(uri);
+        [self image:image operations:operations cropRegion:cropRegion targetSize:targetSize quality:quality mimeType:mimeType resolve:resolve reject:reject];
     }];
+}
+
+RCT_EXPORT_METHOD(imageWithSize:(NSDictionary *)imageSize
+                  operations:(NSArray *)operations
+                  cropRegion:(NSDictionary *)cropRegion
+                  targetSize:(NSDictionary *)targetSize
+                  quality:(NSInteger)quality
+                  mimeType:(NSString *)mimeType
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject)
+{
+    UIImage *image = [self imageWithColor:UIColor.clearColor andSize:CGSizeMake(imageSize[@"width"], imageSie[@"height"])];
+    [self image:image operations:operations cropRegion:cropRegion targetSize:targetSize quality:quality mimeType:mimeType resolve:resolve reject:reject];
+}
+
+- (UIImage *)imageWithColor:(UIColor *)color andSize:(CGSize)size
+
+{
+    CGRect rect = CGRectMake(0.0f, 0.0f, size.width, size.height);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
+
+}
+
+- (void)
+    image:(UIImage *)image
+    operations:(NSArray *)operations
+    cropRegion:(NSDictionary *)cropRegion
+    targetSize:(NSDictionary *)targetSize
+    quality:(NSInteger)quality
+    mimeType:(NSString *)mimeType
+    resolve:(RCTPromiseResolveBlock)resolve
+    reject:(RCTPromiseRejectBlock)reject)
+{
+
+    UIImage *result = [image crop:[RCTConvert CGRect:cropRegion]];
+    if (targetSize != nil) {
+        result = [result resize:[RCTConvert CGSize:targetSize] scale:result.scale];
+    }
+
+    for (NSDictionary *operation in operations) {
+        result = [self processBatchOperation:result operation:operation];
+    }
+
+    NSString *uri = [ImageUtils saveTempFile:result mimeType:mimeType quality:quality];
+    resolve(uri);
 }
 
 - (UIImage *)processBatchOperation:(UIImage *)image operation:(NSDictionary *)operation {

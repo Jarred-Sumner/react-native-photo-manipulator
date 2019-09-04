@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (UIImage *)imageFromUrl:(NSURL *)url;
 + (NSString *)saveTempFile:(UIImage *)image mimeType:(NSString *)mimeType quality:(CGFloat)quality;
 
++ (NSData *)imageToData:(UIImage *)image mimeType:(NSString *)mimeType quality:(CGFloat)quality;
+
 @end
 
 NS_ASSUME_NONNULL_END
