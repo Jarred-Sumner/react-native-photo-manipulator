@@ -29,12 +29,14 @@
 }
 
 + (NSData *)imageToData:(UIImage *)image mimeType:(NSString *)mimeType quality:(CGFloat)quality {
-    if (mimeType == @"image/png") {
+    if ([mimeType isEqualToString:@"image/png"]) {
         return UIImagePNGRepresentation(image);
-    } else if (mimeType == @"image/webp") {
+    } else if ([mimeType isEqualToString:@"image/webp"]) {
         return UIImageWebPRepresentation(image, quality / 100, (WebPImagePreset)WebPImageDefaultPreset, nil);
-    } else if (mimeType == @"image/jpeg") {
+    } else if ([mimeType isEqualToString:@"image/jpeg"]) {
         return UIImageJPEGRepresentation(image, quality / 100);
+    } else {
+        return NULL;
     }
 }
 
