@@ -13,6 +13,17 @@
 
 @implementation ImageUtils
 
++ (UIImage *)image:(UIImage*)image crop:(CGRect)rect displaySize:(CGSize)size {
+
+  BOOL isAnimated = [(SDAnimatedImage*)image animatedImageFrameCount] > 0;
+
+  if (isAnimated) {
+    return image;
+  } else {
+    return [[image sd_croppedImageWithRect:rect] sd_resizedImageWithSize:size scaleMode:SDImageScaleModeFill];
+  }
+}
+
 + (NSString *)createTempFile:(NSString *)prefix mimeType:(NSString *)mimeType {
   NSString *extension = @{
     @"image/jpeg": @".jpg",
@@ -43,7 +54,7 @@
     if ([mimeType isEqualToString:@"image/png"]) {
         return UIImagePNGRepresentation(image);
     } else if ([mimeType isEqualToString:@"image/webp"]) {
-      return [[SDImageWebPCoder sharedCoder] encodedDataWithImage:image format:SDImageFormatWebP options:@{SDImageCoderEncodeCompressionQuality: @(quality / 100.0) }];
+      return [[SDImageWebPCoder sharedCoder] encodedDataWithImage:image format:SDImageFormatWebP options:@{SDImageCoderEncodeCompressionQuality: @(quality / 100.0), SDImageCoderEncodeFirstFrameOnly: @0 }];
     } else if ([mimeType isEqualToString:@"image/jpeg"]) {
         return UIImageJPEGRepresentation(image, quality / 100);
     } else {

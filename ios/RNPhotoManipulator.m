@@ -6,8 +6,9 @@
 #import <React/RCTConvert.h>
 #import <React/RCTImageLoader.h>
 
-#import <WCPhotoManipulator/UIImage+PhotoManipulator.h>
+#import <SDWebImage/SDWebImage.h>
 #import <WCPhotoManipulator/MimeUtils.h>
+#import <WCPhotoManipulator/UIImage+PhotoManipulator.h>
 
 @implementation RNPhotoManipulator
 
@@ -67,6 +68,7 @@ RCT_EXPORT_METHOD(imageWithSize:(NSDictionary *)imageSize
 
 }
 
+
 - (void)
     image:(UIImage *)image
     operations:(NSArray *)operations
@@ -78,16 +80,13 @@ RCT_EXPORT_METHOD(imageWithSize:(NSDictionary *)imageSize
     reject:(RCTPromiseRejectBlock)reject
 {
 
-    UIImage *result = [image crop:[RCTConvert CGRect:cropRegion]];
-    if (targetSize != nil) {
-        result = [result resize:[RCTConvert CGSize:targetSize] scale:result.scale];
-    }
+  UIImage *result = [ImageUtils image:image crop:[RCTConvert CGRect:cropRegion] displaySize:[RCTConvert CGSize:targetSize]];
 
     for (NSDictionary *operation in operations) {
         result = [self processBatchOperation:result operation:operation];
     }
 
-    NSString *uri = [ImageUtils saveTempFile:result mimeType:mimeType quality:quality];
+	    NSString *uri = [ImageUtils saveTempFile:result mimeType:mimeType quality:quality];
     resolve(uri);
 }
 
@@ -129,10 +128,10 @@ RCT_EXPORT_METHOD(crop:(NSURLRequest *)uri
 
         UIImage *result = nil;
         if (targetSize == nil) {
-            result = [image crop:[RCTConvert CGRect:cropRegion]];
-        } else {
-            result = [image crop:[RCTConvert CGRect:cropRegion] targetSize:[RCTConvert CGSize:targetSize]];
+            result = [image sd_croppedImageWithRect:[RCTConvert CGRect:cropRegion]];
         }
+
+      result = [image sd_resizedImageWithSize:[RCTConvert CGSize:targetSize] scaleMode:SDImageScaleModeFill];
 
         NSString *uri = [ImageUtils saveTempFile:result mimeType:mimeType quality:DEFAULT_QUALITY];
         resolve(uri);
