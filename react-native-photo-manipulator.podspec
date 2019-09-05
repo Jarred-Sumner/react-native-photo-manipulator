@@ -18,5 +18,6 @@ Pod::Spec.new do |s|
 
   s.dependency 'React'
   s.dependency 'WCPhotoManipulator'
-  s.dependency 'WebPImageSerialization'
+  s.dependency 'SDWebImageWebPCoder'
+
 end

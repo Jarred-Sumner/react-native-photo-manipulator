@@ -9,13 +9,24 @@
 #import "ImageUtils.h"
 
 #import <WCPhotoManipulator/FileUtils.h>
-#import <WebPImageSerialization/WebPImageSerialization.h>
+#import "SDImageWebPCoder.h"
 
 @implementation ImageUtils
 
++ (NSString *)createTempFile:(NSString *)prefix mimeType:(NSString *)mimeType {
+  NSString *extension = @{
+    @"image/jpeg": @".jpg",
+    @"image/png": @".png",
+    @"image/webp": @".webp",
+  }[mimeType];
+
+  NSString *fileName = [[[NSUUID UUID] UUIDString] stringByAppendingString:extension];
+  return [FileUtils.cachePath stringByAppendingPathComponent:fileName];
+}
+
 
 + (NSString *)saveTempFile:(UIImage *)image mimeType:(NSString *)mimeType quality:(CGFloat)quality {
-    NSString *file = [FileUtils createTempFile:@"" mimeType:mimeType];
+    NSString *file = [ImageUtils createTempFile:@"" mimeType:mimeType];
 
     [ImageUtils saveImageFile:image mimeType:mimeType quality:quality file:file];
 
@@ -32,7 +43,7 @@
     if ([mimeType isEqualToString:@"image/png"]) {
         return UIImagePNGRepresentation(image);
     } else if ([mimeType isEqualToString:@"image/webp"]) {
-        return UIImageWebPRepresentation(image, quality / 100, (WebPImagePreset)WebPImageDefaultPreset, nil);
+      return [[SDImageWebPCoder sharedCoder] encodedDataWithImage:image format:SDImageFormatWebP options:@{SDImageCoderEncodeCompressionQuality: @(quality / 100.0) }];
     } else if ([mimeType isEqualToString:@"image/jpeg"]) {
         return UIImageJPEGRepresentation(image, quality / 100);
     } else {
