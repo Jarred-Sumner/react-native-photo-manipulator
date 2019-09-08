@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ImageUtils : NSObject
 
 + (UIImage *)imageFromUrl:(NSURL *)url;
++ (UIImage *)image:(UIImage*)image crop:(CGRect)rect displaySize:(CGSize)size;
 + (NSString *)saveTempFile:(UIImage *)image mimeType:(NSString *)mimeType quality:(CGFloat)quality;
 
 + (NSData *)imageToData:(UIImage *)image mimeType:(NSString *)mimeType quality:(CGFloat)quality;
